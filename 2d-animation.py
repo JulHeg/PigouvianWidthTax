@@ -13,9 +13,7 @@ import time
 # pygame setup
 pg.init()
 screen = pg.display.set_mode((1280, 720))
-#clock = pg.time.Clock()
 running = True
-#dt = 0
 
 start_time = time.time()
 duration = 2.0
@@ -33,9 +31,6 @@ rect_color = "white"
 end_x = start_x + shift
 
 
-#line_pos = pg.Vector2(start_x, start_y)
-#line_pos_end = pg.Vector2(start_x + shift, start_y)
-
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -52,8 +47,6 @@ while running:
     
     # If the animation is over, exit animation
     if t < 1.0:
-        #start_time = time.time()
-        #t = 0
         x = start_x * (1 - t) + end_x * t
         current_pos = (int(x), start_y)
         pg.draw.rect(screen, rect_color, pg.Rect(current_pos, rect_size))
@@ -61,27 +54,8 @@ while running:
     # plot line in last position
     pg.draw.rect(screen, rect_color, pg.Rect(current_pos, rect_size))
 
-    
-#    while line_pos.x < line_pos_end.x or line_pos.y < line_pos_end.y:
-#        line_pos.y += 10
-#        line_pos.x += 10
-
-    #keys = pygame.key.get_pressed()
-    #if keys[pygame.K_w]:
-    #    player_pos.y -= 300 * dt
-    #if keys[pygame.K_s]:
-    #    player_pos.y += 300 * dt
-    #if keys[pygame.K_a]:
-    #    player_pos.x -= 300 * dt
-    #if keys[pygame.K_d]:
-    #    player_pos.x += 300 * dt
-
     # flip() the display to put your work on screen
     pg.display.flip()
 
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
-#    dt = clock.tick(60) / 1000
 
 pg.quit()
