@@ -6,7 +6,7 @@ Created on Fri May 26 11:29:02 2023
 @author: Daniel
 """
 
-from numpy.random import randint
+from numpy.random import uniform
 from time import sleep
 import datetime as dt
 
@@ -14,8 +14,7 @@ import datetime as dt
 while True:
     sleep(10)
     with open('shift.txt', 'w') as f:
-        
-        x = str([randint(200, 450, 1)[0], dt.datetime.now().strftime("%H:%M:%S")])[1:-1]
+        x = str([uniform(2, 8), dt.datetime.now().strftime("%H:%M:%S")])[1:-1]
         print(x)
         f.write(x)
         f.close()
