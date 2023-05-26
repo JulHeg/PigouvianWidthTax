@@ -38,7 +38,7 @@ while running:
             running = False
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill((128,128,128))
+    #screen.fill((128,128,128))
 
     # Calculate the current time elapsed since the start of the animation
     t = (time.time() - start_time) / duration
@@ -47,8 +47,8 @@ while running:
     if t < 1.0:
         move_x = int(shift * t)
         rect.x = start_x + move_x
-    else:
-        start_time = time.time()
+    #else:
+    #    start_time = time.time()
 
     # plot rectangle in current position
     pg.draw.rect(screen, rect_color, rect)
