@@ -6,15 +6,23 @@ Created on Thu May 25 21:01:13 2023
 @author: Daniel
 """
 
-# Example file showing a rectangle moving on screen
 import pygame as pg
 import time
 
+# get dpi
+import sys
+from PyQt5.QtWidgets import QApplication
+app = QApplication(sys.argv)
+dpi = app.screens()[0].physicalDotsPerInch()
+app.quit()
+print(dpi)
+
+# screen resolution
 from screeninfo import get_monitors
 for m in get_monitors():
     print(str(m))
 screen_resol = get_monitors()
-# define dpi
+screen_width = screen_resol[0].width
 
 
 def make_new_coordinate_list(new_car_width, old_coordinate_list, n_car):
@@ -31,7 +39,7 @@ def make_new_coordinate_list(new_car_width, old_coordinate_list, n_car):
 # pygame setup
 pg.init()
 
-screen = pg.display.set_mode((screen_resol[0].width, screen_resol[0].height), pg.FULLSCREEN)
+screen = pg.display.set_mode((screen_width, screen_resol[0].height), pg.FULLSCREEN)
 running = True
 
 start_time = time.time()
@@ -40,12 +48,13 @@ old_time = None
 
 # left and right border line
 left_border_x = 0
-right_border_x = 1260
+right_border_x = screen_width -20
 
 # starting coordinates
 start_y = 20
 
-startcos = [315, 630, 945]
+#startcos = [315, 630, 945]
+startcos = [screen_width /4, screen_width/2, screen_width/4*3]
 # distance to move in x direction (positive or negative)
 
 colist = startcos.copy()
