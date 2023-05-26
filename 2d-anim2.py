@@ -23,6 +23,7 @@ for m in get_monitors():
     print(str(m))
 screen_resol = get_monitors()
 screen_width = screen_resol[0].width
+screen_height = screen_resol[0].height
 
 
 def make_new_coordinate_list(new_car_width_cm, old_coordinate_list, n_car, dpi):
@@ -40,27 +41,28 @@ def make_new_coordinate_list(new_car_width_cm, old_coordinate_list, n_car, dpi):
 # pygame setup
 pg.init()
 
-screen = pg.display.set_mode((screen_width, screen_resol[0].height), pg.FULLSCREEN)
+screen = pg.display.set_mode((screen_width, screen_height), pg.FULLSCREEN)
 running = True
 
 start_time = time.time()
 duration = 2.0
 old_time = None
 
-# left and right border line
+# border lines
 left_border_x = 0
 right_border_x = screen_width - 20
+top_border_x = 0
 
 # starting coordinates
 start_y = 20
 
 #startcos = [315, 630, 945]
 startcos = [screen_width /4, screen_width/2, screen_width/4*3]
-# distance to move in x direction (positive or negative)
-
 colist = startcos.copy()
+
 # size of rectangle
-rect_size = (20, 400)
+line_height = 650
+rect_size = (20, line_height)
 rect_color = (255, 255, 255)
 bg_color = (128, 128, 128)
 
@@ -72,6 +74,31 @@ for rectangle_coordinates in colist:
 # borders
 left_border = pg.Rect(left_border_x, start_y, *rect_size)
 right_border = pg.Rect(right_border_x, start_y, *rect_size)
+top_border = pg.Rect(top_border_x, 0, *(screen_width, start_y))
+# field for pricing
+price_color = (130, 100, 100)
+price_size = (screen_width / 5, screen_height - line_height - start_y)
+price_field = pg.Rect(screen_width - price_size[0], line_height + start_y + 1, *price_size)
+
+# initialize values for car width and parking price
+init_price = 0
+init_width = 0
+displayed_texts = ['Car Width:', str(init_width), 'Your Price:', str(init_price)]
+displayed_width = screen_width - (price_size[0] // 2)
+displayed_offset = 25
+displayed_positions = [(displayed_width, screen_height - price_size[1] * 0.8),
+                       (displayed_width + displayed_offset, screen_height - price_size[1] * 0.65),
+                       (displayed_width, screen_height - price_size[1] * 0.4),
+                       (displayed_width + displayed_offset, screen_height - price_size[1] * 0.25)]
+text_color = (0, 0, 0)
+
+# text elements in pricing field
+font = pg.font.Font('freesansbold.ttf', 36) # font object
+texts = [font.render(tex, True, text_color) for tex in displayed_texts]
+textRects = [tex.get_rect() for tex in texts]
+for i in range(len(texts)):
+    textRects[i].center = displayed_positions[i]
+
 
 # Name of the text file to read the shift value from
 shift_file_name = "shift.txt"
@@ -88,9 +115,11 @@ while running:
         if event.type == pg.QUIT:
             running = False
 
+    # alternative exit
     keys = pg.key.get_pressed()
     if keys[pg.K_q]:
         pg.quit()
+    
     # Check the text file for a new shift value
     try:
         with open(shift_file_name, 'r') as f:
@@ -102,6 +131,9 @@ while running:
                     old_time = txt_input[1]
                     new_x_coordinate_list = make_new_coordinate_list(float(txt_input[0]), colist, car_counter, dpi)
                     car_counter += 1
+                    # update width and price (= 0.4 * width)
+                    texts[1] = font.render(txt_input[0], True, text_color)
+                    texts[3] = font.render(str(round(int(txt_input[0]) * 0.4),2) + "€", True, text_color)
                     for c, coord in enumerate(new_x_coordinate_list):
                         if new_x_coordinate_list[c] != colist[c]:
                             colist[c] = coord
@@ -110,6 +142,8 @@ while running:
                             start_times[c] = time.time()
             else:
                 car_counter = 0
+                texts[1] = font.render('0', True, text_color)
+                texts[3] = font.render('0', True, text_color)
     except (FileNotFoundError, ValueError, IndexError):
         print("An Error occured while reading the shift file")
         pass  # If the file doesn't exist or the content is not a number, ignore it
@@ -141,6 +175,15 @@ while running:
     # plot border lines
     pg.draw.rect(screen, rect_color, left_border)
     pg.draw.rect(screen, rect_color, right_border)
+    pg.draw.rect(screen, rect_color, top_border)
+    # plot price field
+    pg.draw.rect(screen, price_color, price_field)
+
+    # plot text
+    for i in range(len(texts)):
+        screen.blit(texts[i], textRects[i])
+    
+    pg.display.update() # display texts
 
     # flip() the display to put your work on screen
     pg.display.flip()
