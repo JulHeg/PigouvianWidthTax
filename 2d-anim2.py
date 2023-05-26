@@ -88,6 +88,9 @@ while running:
         if event.type == pg.QUIT:
             running = False
 
+    keys = pg.key.get_pressed()
+    if keys[pg.K_q]:
+        pg.quit()
     # Check the text file for a new shift value
     try:
         with open(shift_file_name, 'r') as f:
