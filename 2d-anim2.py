@@ -129,7 +129,8 @@ while running:
         else:
             pass
 
-    # plot rectangle in current position
+    screen.fill(bg_color)
+
     # plot rectangle in current position
     for rectangle in rectangles:
         pg.draw.rect(screen, rect_color, rectangle)
