@@ -6,7 +6,7 @@ Created on Thu May 25 21:01:13 2023
 @author: Daniel
 """
 
-# Example file showing a circle moving on screen
+# Example file showing a rectangle moving on screen
 import pygame as pg
 import time
 
@@ -25,10 +25,7 @@ start_x = 200
 shift = 100
 # size of rectangle
 rect_size = (20,400)
-rect_color = "white"
-
-# x end position
-end_x = start_x + shift
+rect_color = (255,255,255)
 
 # Create the rectangle
 rect = pg.Rect(start_x, start_y, *rect_size)
@@ -41,15 +38,16 @@ while running:
             running = False
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("grey")
+    screen.fill((128,128,128))
 
     # Calculate the current time elapsed since the start of the animation
     t = (time.time() - start_time) / duration
 
-    # If the animation is over, exit animation
+    # If the animation is not over, move the rectangle
     if t < 1.0:
-        x = shift * t
-        rect.move_ip(int(x), 0)
+        move_x = int(shift * t)
+        rect.x = start_x + move_x
+    else:
         start_time = time.time()
 
     # plot rectangle in current position
@@ -57,6 +55,5 @@ while running:
 
     # flip() the display to put your work on screen
     pg.display.flip()
-
 
 pg.quit()
