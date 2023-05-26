@@ -1,0 +1,15 @@
+name: intellipark
+channels:
+  - defaults
+dependencies:
+  - python=3.10.13
+  - pip:
+      - numpy
+      - matplotlib
+      - scipy
+      - scikit-image
+      - pygame
+      - screeninfo
+      - keyboard
+prefix: C:\CVPythonFW\Miniconda3\envs\intellipark
+
