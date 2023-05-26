@@ -10,6 +10,10 @@ Created on Thu May 25 21:01:13 2023
 import pygame as pg
 import time
 
+from screeninfo import get_monitors
+for m in get_monitors():
+    print(str(m))
+screen_resol = get_monitors()
 
 def make_new_coordinate_list(new_car_width, old_coordinate_list, n_car):
     print("old_coordinate_list: ", old_coordinate_list)
@@ -24,7 +28,7 @@ def make_new_coordinate_list(new_car_width, old_coordinate_list, n_car):
 
 # pygame setup
 pg.init()
-screen = pg.display.set_mode((1280, 720))
+screen = pg.display.set_mode((screen_resol[0].width, screen_resol[0].height))
 running = True
 
 start_time = time.time()
