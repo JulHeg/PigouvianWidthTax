@@ -18,6 +18,10 @@ running = True
 start_time = time.time()
 duration = 2.0
 
+# left and right border line
+left_border_x = 0
+right_border_x = 1260
+
 # starting coordinates
 start_y = 20
 start_x1 = 200
@@ -32,6 +36,9 @@ rect_color = (128, 128, 128)
 # Create the rectangle
 rect1 = pg.Rect(start_x1, start_y, *rect_size)
 rect2 = pg.Rect(start_x2, start_y, *rect_size)
+# borders
+left_border = pg.Rect(left_border_x, start_y, *rect_size)
+right_border = pg.Rect(right_border_x, start_y, *rect_size)
 
 # Name of the text file to read the shift value from
 shift_file_name = "shift.txt"
@@ -98,6 +105,10 @@ while running:
     # plot rectangle in current position
     pg.draw.rect(screen, rect_color, old_rect1)
     pg.draw.rect(screen, rect_color, old_rect2)
+
+    # plot border lines
+    pg.draw.rect(screen, rect_color, left_border)
+    pg.draw.rect(screen, rect_color, right_border)
 
     # flip() the display to put your work on screen
     pg.display.flip()
