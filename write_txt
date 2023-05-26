@@ -12,10 +12,10 @@ from time import sleep
 
 while True:
     sleep(5)
-    with open('coordinates.txt', 'w') as f:
+    with open('shift.txt', 'w') as f:
         #lines = f.readlines()
         
-        x = str(randint(50, 600, 1))
+        x = str(randint(50, 600, 1)[0])
         print(x)
         f.write(x)
         f.close()

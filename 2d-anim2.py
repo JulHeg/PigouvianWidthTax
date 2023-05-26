@@ -34,6 +34,8 @@ rect = pg.Rect(start_x, start_y, *rect_size)
 shift_file_name = "shift.txt"
 
 while running:
+    # sleep for 1 millisecond to avoid 100% CPU usage
+    time.sleep(0.001)
     # poll for events
     for event in pg.event.get():
         if event.type == pg.QUIT:
