@@ -8,17 +8,17 @@ Created on Thu May 25 21:01:13 2023
 
 import pygame as pg
 import time
-
-# get dpi
 import sys
 from PyQt5.QtWidgets import QApplication
+from screeninfo import get_monitors
+
+
 app = QApplication(sys.argv)
 dpi = app.screens()[0].physicalDotsPerInch()
 app.quit()
 print(dpi)
 
 # screen resolution
-from screeninfo import get_monitors
 for m in get_monitors():
     print(str(m))
 screen_resol = get_monitors()
@@ -48,7 +48,7 @@ old_time = None
 
 # left and right border line
 left_border_x = 0
-right_border_x = screen_width -20
+right_border_x = screen_width - 20
 
 # starting coordinates
 start_y = 20
@@ -59,7 +59,7 @@ startcos = [screen_width /4, screen_width/2, screen_width/4*3]
 
 colist = startcos.copy()
 # size of rectangle
-rect_size = (20,400)
+rect_size = (20, 400)
 rect_color = (255, 255, 255)
 bg_color = (128, 128, 128)
 
