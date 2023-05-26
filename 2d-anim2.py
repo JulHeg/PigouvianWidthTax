@@ -96,7 +96,8 @@ while running:
         pass
 
     # plot rectangle in current position
-    #pg.draw.rect(screen, rect_color, rect)
+    pg.draw.rect(screen, rect_color, old_rect1)
+    pg.draw.rect(screen, rect_color, old_rect2)
 
     # flip() the display to put your work on screen
     pg.display.flip()
