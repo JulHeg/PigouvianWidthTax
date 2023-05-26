@@ -13,9 +13,8 @@ from time import sleep
 while True:
     sleep(5)
     with open('shift.txt', 'w') as f:
-        #lines = f.readlines()
         
-        x = str(randint(50, 600, 1)[0])
+        x = str(list(randint(50, 1200, 2)))
         print(x)
         f.write(x)
         f.close()
