@@ -27,6 +27,7 @@ for i in range(10):
     keyboard.wait("ö")
     print('Got a key')
     phase_img, intensity_img, phase_meta, intensity_meta = model.get_image()
+    plt.imsave('phase_img.png', phase_img)
 
     axis_scales = [.004, .002] # The angle spanned by one pixel in each dimension.
     alphas = np.zeros_like(phase_img_clean)
@@ -48,7 +49,7 @@ for i in range(10):
     test = scipy.signal.wiener(test, mysize=(5, 5))
     test *= 2 / (alphas + 1)**2
     test = np.abs(test)
-    car_cutoff = 0.01
+    car_cutoff = 0.02
     car_silhouette = test > car_cutoff
     #car_silhouette = scipy.ndimage.percentile_filter(car_silhouette, 0.7, size=5)
     is_there_a_car = False
@@ -72,12 +73,16 @@ for i in range(10):
         phase_img_filtered = scipy.signal.wiener(preprocess_image(phase_img))
         phase_img_filtered = scipy.signal.medfilt(phase_img_filtered, 3)
         def get_mean_x_displacement(pixel_locations):
-            distances = phase_img[pixel_locations[0], pixel_locations[1]]
+            distances = phase_img_filtered[pixel_locations[0], pixel_locations[1]]
             print(np.mean(distances))
             return distances * np.sin(axis_scales[0] * (pixel_locations[0] - alphas.shape[0] / 2))
         proper_width = np.mean(get_mean_x_displacement(left_pixels) - get_mean_x_displacement(right_pixels))
         print("Proper width (m): ", proper_width)
-
+        # Check if proper width is somehow nan or inf
+        if np.isnan(proper_width) or np.isinf(proper_width):
+            print("Result wasn't a proper number")
+            continue
+        plt.imsave('car_silhouette.png', car_silhouette)
         with open('shift.txt', 'w') as f:
             x = str(100 * proper_width) + ', ' + datetime.now().strftime("%H:%M:%S")
             print(x)

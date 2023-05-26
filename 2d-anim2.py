@@ -81,11 +81,11 @@ price_size = (screen_width / 5, screen_height - line_height - start_y)
 price_field = pg.Rect(screen_width - price_size[0], line_height + start_y + 1, *price_size)
 
 # initialize values for car width and parking price
-init_price = 0
-init_width = 0
+init_width = "0 cm"
+init_price = "€0"
 displayed_texts = ['Car Width:', str(init_width), 'Your Price:', str(init_price)]
 displayed_width = screen_width - (price_size[0] // 2)
-displayed_offset = 25
+displayed_offset = 0
 displayed_positions = [(displayed_width, screen_height - price_size[1] * 0.8),
                        (displayed_width + displayed_offset, screen_height - price_size[1] * 0.65),
                        (displayed_width, screen_height - price_size[1] * 0.4),
@@ -132,8 +132,9 @@ while running:
                     new_x_coordinate_list = make_new_coordinate_list(float(txt_input[0]), colist, car_counter, dpi)
                     car_counter += 1
                     # update width and price (= 0.4 * width)
-                    texts[1] = font.render(txt_input[0], True, text_color)
-                    texts[3] = font.render(str(round(int(txt_input[0]) * 0.4),2) + "€", True, text_color)
+                    print('Ttext changed')
+                    texts[1] = font.render(str(round(float(txt_input[0]), 2)) + " cm", True, text_color)
+                    texts[3] = font.render("€" + str(round(float(txt_input[0]) * 0.4,2)) + "", True, text_color)
                     for c, coord in enumerate(new_x_coordinate_list):
                         if new_x_coordinate_list[c] != colist[c]:
                             colist[c] = coord
@@ -142,8 +143,8 @@ while running:
                             start_times[c] = time.time()
             else:
                 car_counter = 0
-                texts[1] = font.render('0', True, text_color)
-                texts[3] = font.render('0', True, text_color)
+                texts[1] = font.render(init_width, True, text_color)
+                texts[3] = font.render(init_price, True, text_color)
     except (FileNotFoundError, ValueError, IndexError):
         print("An Error occured while reading the shift file")
         pass  # If the file doesn't exist or the content is not a number, ignore it
