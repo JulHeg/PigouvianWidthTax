@@ -1,5 +1,4 @@
 import numpy as np
-import tofpipe
 import matplotlib.pyplot as plt
 import time
 from scipy.ndimage import gaussian_filter
@@ -29,7 +28,7 @@ def get_phase_from_raspi():
     print('Failed to get image from Raspberry Pi')
     
 
-def measure_vehicle_width(clean_plate_phase, vehicle_capture_phase, axis_scales = [.002, .002], verbose = False, save_images = False):
+def measure_vehicle_width(clean_plate_phase, vehicle_capture_phase, axis_scales = [.002, .002], verbose = False, save_images = True):
     """
     Measures the width of a vehicle in a phase image. This uses some fairly ad-hoc hodgepodge image processing techniques to detect where the image changed from the clean plate to out image with the vehicle.
     Then we know where the car is. Next we use the depth information with some light trigonometry to get the width of the vehicle in metres.
@@ -41,9 +40,6 @@ def measure_vehicle_width(clean_plate_phase, vehicle_capture_phase, axis_scales 
     :param save_images: Whether to save some images.
     :return: The width of the vehicle in meter.
     """
-    if save_images:
-        plt.imsave('clean_plate_phase.png', clean_plate_phase)
-        plt.imsave('vehicle_capture_phase.png', vehicle_capture_phase)
     alphas = np.zeros_like(clean_plate_phase)
     for i in range(alphas.shape[0]):
         for j in range(alphas.shape[1]):

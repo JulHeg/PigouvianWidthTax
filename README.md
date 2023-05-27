@@ -33,3 +33,5 @@ python 2d-anim2.py
 ## Other things in this repo
 
 We put some things besides our final demo in this repository. With `collect_dataset.ipynb` we collected a small dataset of different scans in our model setup. It's not big enough to train some fancy neural networks, but we used it to calibrate our regular algorithm. As you can see in the `measurement_calibration.ipynb`, we usually manage to get the size to within 10% or so.
+
+There are also some old Python artifacts in the `archive` folder if anyone is interested. We also went out to a nearby car park to capture some actual depth images of cars with our sensor. These images are in the `images` folder.

@@ -11,6 +11,7 @@ import time
 import sys
 from PyQt5.QtWidgets import QApplication
 from screeninfo import get_monitors
+from PIL import Image
 
 
 app = QApplication(sys.argv)
@@ -183,6 +184,17 @@ while running:
     # plot text
     for i in range(len(texts)):
         screen.blit(texts[i], textRects[i])
+    try:
+        # Import the phase image with pillow
+        image_path = "camera_image.png"
+        image = Image.open(image_path)
+        zoom_factor = 0.7
+        image = image.resize((int(image.size[0] * zoom_factor), int(image.size[1] * zoom_factor)))
+        imp = pg.image.fromstring(image.tobytes(), image.size, image.mode)#.convert()
+        screen.blit(imp, (0, screen_height - image.size[1]))
+    except Exception  as e:
+        print("Image import failed")
+        print('An exception occurred: {}'.format(e))
     
     pg.display.update() # display texts
 
