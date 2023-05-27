@@ -1,5 +1,5 @@
 # IntelliPark
-
+![Depth image of a toy car](car_pic_bmw.png)
 This is our submission to the [Hackaburg 2023](https://hackaburg.de/) hackathon to make cars pay for parking space by their actual width as a Pigouvian tax on parking footprint. You can read more about the idea of our submission [here](https://devpost.com/software/tax-the-width).
 
 ## How to run this
@@ -34,4 +34,4 @@ python 2d-anim2.py
 
 We put some things besides our final demo in this repository. With `collect_dataset.ipynb` we collected a small dataset of different scans in our model setup. It's not big enough to train some fancy neural networks, but we used it to calibrate our regular algorithm. As you can see in the `measurement_calibration.ipynb`, we usually manage to get the size to within 10% or so.
 
-There are also some old Python artifacts in the `archive` folder if anyone is interested. We also went out to a nearby car park to capture some actual depth images of cars with our sensor. These images are in the `images` folder.
+There are also some old Python artifacts in the `archive` folder if anyone is interested. We also went out to a nearby car park to capture some actual depth images of cars with our sensor. These images are in the `images` folder. There's also a nice selection of random screenshots in the main folder ending to look at.
