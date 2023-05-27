@@ -16,32 +16,35 @@ temp1 = 20
 FRAME_LEN = tofpipe.HVGA
 wait_time = 1
 while True:
-    # only needs to be constructed once with params
-    pipeline = tofpipe.SingleAlgorithm(FREQ0, frame_len=FRAME_LEN)
+    try:
+        # only needs to be constructed once with params
+        pipeline = tofpipe.SingleAlgorithm(FREQ0, frame_len=FRAME_LEN)
 
-    # use the follwing for 2 frequency (8 phase) algorithm:
-    # pipeline = tofpipe.DualAlgorithm(FREQ0, FREQ1, frame_len=FRAME_LEN)
+        # use the follwing for 2 frequency (8 phase) algorithm:
+        # pipeline = tofpipe.DualAlgorithm(FREQ0, FREQ1, frame_len=FRAME_LEN)
 
-    # Setup Camera
+        # Setup Camera
 
-    start_time = time.time()
-    camera = tofpipe.Camera()
-    camera.open()
-    camera.current_usecase = camera.usecases[0] #4 frames, 80.32MHz
+        start_time = time.time()
+        camera = tofpipe.Camera()
+        camera.open()
+        camera.current_usecase = camera.usecases[0] #4 frames, 80.32MHz
 
-    camera.start()
-    raw_frames = camera.grab_raw()
-    camera.stop()
+        camera.start()
+        raw_frames = camera.grab_raw()
+        camera.stop()
 
-    pipeline.run(raw_frames[1:, 1:, :].reshape(4,-1))
-    def preprocess_image(image):
-        image = gaussian_filter(image, 1)
-        dtfloat = tofpipe.default_dtype()
-        xout = np.ones((image.shape[0]*2,image.shape[1]), dtype=dtfloat)
-        image = tofpipe.interpolate_mean(image, xout)
-        return xout
-    phase = pipeline.phase.reshape(240,640)
-    phase = preprocess_image(phase)
-    file_path = 'phase_live.npy'
-    np.save(file_path, phase)
+        pipeline.run(raw_frames[1:, 1:, :].reshape(4,-1))
+        def preprocess_image(image):
+            image = gaussian_filter(image, 1)
+            dtfloat = tofpipe.default_dtype()
+            xout = np.ones((image.shape[0]*2,image.shape[1]), dtype=dtfloat)
+            image = tofpipe.interpolate_mean(image, xout)
+            return xout
+        phase = pipeline.phase.reshape(240,640)
+        phase = preprocess_image(phase)
+        file_path = 'phase_live.npy'
+        np.save(file_path, phase)
+    except:
+        print('Error occured, no file written')
     time.sleep(wait_time)

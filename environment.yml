@@ -11,5 +11,6 @@ dependencies:
       - pygame
       - screeninfo
       - keyboard
+      - pysftp
 prefix: C:\CVPythonFW\Miniconda3\envs\intellipark
 
