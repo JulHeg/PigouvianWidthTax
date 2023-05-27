@@ -21,7 +21,7 @@ import utils
 phase_img_clean = utils.get_phase_from_raspi()
 keystroke_to_wait_for = "ö"
 print('Got a clean plate to compare to')
-for i in range(10):
+while True:
     keyboard.wait(keystroke_to_wait_for)
     print('Got a key')
     phase_img = utils.get_phase_from_raspi()
