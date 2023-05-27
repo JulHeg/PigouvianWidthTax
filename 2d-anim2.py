@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu May 25 21:01:13 2023
+Plot the UI for the parking lot and continually reads the shift.txt file to get the width of the car and the time of the measurement.
+It also displays the live camera image from the Raspberry Pi.
 
 @author: Daniel
 """

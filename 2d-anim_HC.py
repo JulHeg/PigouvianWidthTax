@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu May 25 21:01:13 2023
-
+This the backup to 2d-anim2.py. It doesn't have a live camera feed and doesn't actually 3D scan anything. But it still has the nice UI if our hardware goes bad.
 @author: Daniel
 """
 
