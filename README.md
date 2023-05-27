@@ -1,6 +1,6 @@
 # IntelliPark
 
-This is our submission to the [Hackaburg 2023](https://hackaburg.de/) hackathon. You can read more about the idea of our submission [here](https://devpost.com/software/tax-the-width).
+This is our submission to the [Hackaburg 2023](https://hackaburg.de/) hackathon to make cars pay for parking space by their actual width as a Pigouvian tax on parking footprint. You can read more about the idea of our submission [here](https://devpost.com/software/tax-the-width).
 
 ## How to run this
 This repository assumes you have a Raspberry Pi with an as-yet unreleased time of flight camera module plugged in and all the drivers running. You should also have an active SSH connection from your computer to that Raspberry. You can install the needed environment with Anaconda like this:
