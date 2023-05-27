@@ -25,6 +25,7 @@ while True:
         phase_img = utils.get_phase_from_raspi()
         plt.imsave('camera_image.png', phase_img)
         proper_width = utils.measure_vehicle_width(phase_img_clean, phase_img, verbose=True)
+        proper_width += 1.5 # Add a bit of margin so people can get out
         with open('shift.txt', 'w') as f:
             x = str(100 * proper_width) + ', ' + datetime.now().strftime("%H:%M:%S")
             print(x)

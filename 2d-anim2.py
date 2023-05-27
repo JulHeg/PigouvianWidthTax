@@ -120,6 +120,10 @@ while running:
     keys = pg.key.get_pressed()
     if keys[pg.K_q]:
         pg.quit()
+        # Clear the shift file
+        with open(shift_file_name, 'w') as f:
+            f.write("")
+            
     
     # Check the text file for a new shift value
     try:
