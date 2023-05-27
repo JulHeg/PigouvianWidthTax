@@ -27,7 +27,7 @@ for i in range(10):
     phase_img = utils.get_phase_from_raspi()
     proper_width = utils.measure_vehicle_width(phase_img_clean, phase_img, verbose=True)
     with open('shift.txt', 'w') as f:
-        x = str(100 * proper_width)# + ', ' + datetime.now().strftime("%H:%M:%S")
+        x = str(100 * proper_width) + ', ' + datetime.now().strftime("%H:%M:%S")
         print(x)
         f.write(x)
         f.close()

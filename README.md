@@ -15,7 +15,7 @@ Then you can run the [stream_phase.py](file_from_raspi\stream_phase.py) file the
 
 On your computer, run the `python scanner_script.py` script to measure how horizontally wide an object moved in front of the sensor is when you press a button. We use this to measure toy cars in our parking space demo. You can also visualize that by simultaneously running the `python 2d-anim_HC.py`. This opens a full screen windows simulating a car park. Once you measure an objects width, it sizes a parking space in life-size where you could put it.
 
-## Step-by-step to get this running (with our setup graciously provided by Infineon at least)
+## Step-by-step to running the demo (with our setup graciously provided by Infineon at least)
 
 Use this commands to get the image deamon on the Raspberry Pi running:
 ```
@@ -29,3 +29,7 @@ Then on your own computer run
 python scanner_script.py
 python 2d-anim_HC.py
 ```
+
+## Other things in this repo
+
+We put some things besides our final demo in this repository. With `collect_dataset.ipynb` we collected a small dataset of different scans in our model setup. It's not big enough to train some fancy neural networks, but we used it to calibrate our regular algorithm. As you can see in the `measurement_calibration.ipynb`, we usually manage to get the size to within 10% or so.
