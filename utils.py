@@ -10,7 +10,8 @@ import pysftp
 
 def get_phase_from_raspi():
     """
-    Gets a phase image from the raspberry pi. This is quite janky because the TCP/IP didn't work so we use SFTP to poll.
+    Gets a phase image from the Raspberr Pi. This is quite janky because the TCP/IP didn't work so we use SFTP to poll.
+    Notably, this requires the Raspberr Pi to run stream_phase.py as a daemon.
     :return: The phase image as a numpy array.
     """
     max_retry = 5
@@ -40,23 +41,27 @@ def measure_vehicle_width(clean_plate_phase, vehicle_capture_phase, axis_scales 
     :param save_images: Whether to save some images.
     :return: The width of the vehicle in meter.
     """
+    # Calculate the spatial angles from the vertical axis for every pixel of the image
     alphas = np.zeros_like(clean_plate_phase)
     for i in range(alphas.shape[0]):
         for j in range(alphas.shape[1]):
             alphas[i, j] = (axis_scales[0]**2 * (i - alphas.shape[0] / 2)**2 + axis_scales[1]**2 * (j - alphas.shape[1] / 2)**2)**0.5
+    
     def preprocess_image(image):
+        # Clean up the worst noise
         image = np.nan_to_num(image)
         image = gaussian_filter(image, 1)
         return image
+    
     def getLargestCC(segmentation):
+        # Gets the largest connected component of a binary mask. Cars in this scenario are like the Highlander: There can be only one.
         labels = label(segmentation)
-        assert( labels.max() != 0 ) # assume at least 1 CC
         largestCC = labels == np.argmax(np.bincount(labels.flat)[1:])+1
         return largestCC
 
     test = preprocess_image(vehicle_capture_phase) - preprocess_image(clean_plate_phase)
     test = scipy.signal.wiener(test, mysize=(5, 5))
-    test *= 2 / (alphas + 1)**2
+    test *= 2 / (alphas + 1)**2 # Ad hoc weighting: There's more noise at the edges of the image so we smooth it out more there
     test = np.abs(test)
     car_cutoff = 0.02
     car_silhouette = test > car_cutoff
@@ -75,14 +80,21 @@ def measure_vehicle_width(clean_plate_phase, vehicle_capture_phase, axis_scales 
             print("Depth: ", max_depth - min_depth)
         
         n_pixels = 40
+        # We calculate the average height of the leftmost and rightmost pixels of the car.
         left_pixels = (car_silhouette_where[0][-n_pixels:], car_silhouette_where[1][-n_pixels:])
         right_pixels = (car_silhouette_where[0][:n_pixels], car_silhouette_where[1][:n_pixels])
         depth_map = scipy.signal.wiener(preprocess_image(vehicle_capture_phase)) * 0.11
         depth_map = scipy.signal.medfilt(depth_map, 3)
+        
         def get_mean_x_displacement(pixel_locations):
+            # Because we have a depth sensor instead of just a normal camera, we don't just have to count how many images the car spans.
+            # That couldn't differentiate whether a car is tall or wide. Instead we use the depth information to calculate the width in meters with some trigonometry.
+            # This function returns how many centimeters the thing images at the given pixel locations are laterally displaced from the center of the image. 
+            # This is only along the x-axis because we assume the car is parallel to the camera.
             distances = depth_map[pixel_locations[0], pixel_locations[1]]
             if verbose:
                 print(np.mean(distances))
             return distances * np.sin(axis_scales[0] * (pixel_locations[0] - alphas.shape[0] / 2))
+        
         proper_width = np.mean(get_mean_x_displacement(left_pixels) - get_mean_x_displacement(right_pixels))
         return proper_width
