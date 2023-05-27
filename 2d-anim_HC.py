@@ -102,6 +102,16 @@ for i in range(len(texts)):
 
 # Name of the text file to read the shift value from
 shift_file_name = "shift.txt"
+# if shift.txt does not exist, create it
+try:
+    shift_file = open(shift_file_name, "r")
+    shift = int(shift_file.read())
+    shift_file.close()
+except FileNotFoundError:
+    shift_file = open(shift_file_name, "w")
+    shift_file.close()
+
+
 start_coords = startcos.copy()
 shifts = [0] * len(rectangles)
 start_times = [time.time()] * len(rectangles)
